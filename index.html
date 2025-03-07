@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <p>это тестовая страница </p>
     <p class="testtg"></p>
-    <script src="https://telegram.org/js/telegram-web-app.js">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
         let tg = window.Telegram.WebApp;
         console.log(tg.initData);
         document.querySelector('.testtg').innerHTML = tg.initData;
     </script>
 </body>
+
 </html>
