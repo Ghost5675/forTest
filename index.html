@@ -22,7 +22,7 @@
                 return;
             }
 
-            document.querySelector('.testtg').innerHTML = tg.initData;
+            document.querySelector('.testtg').innerHTML = "Добро пожаловать: " + tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.isBot) {
                 console.log("Bot detected");
