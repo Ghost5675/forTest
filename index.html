@@ -19,7 +19,7 @@
             margin-bottom: 10px;
         }
         p {
-            font-size: 1rem; 
+            font-size: 1rem; /* 16px по умолчанию */
             margin-bottom: 15px;
         }
         button {
@@ -38,12 +38,13 @@
             background-color: #0056b3;
         }
 
+        /* Смартфоны в портретной ориентации (575px и менее) */
         @media (max-width: 575px) {
             body {
                 padding: 5px;
             }
             p {
-                font-size: 0.9rem;
+                font-size: 0.9rem; /* 14px */
             }
             button {
                 width: 100%;
@@ -55,9 +56,10 @@
             }
         }
 
+        /* Смартфоны в альбомной ориентации (576px — 767px) */
         @media (min-width: 576px) and (max-width: 767px) {
             p {
-                font-size: 1rem; 
+                font-size: 1rem; /* 16px */
             }
             button {
                 padding: 12px 20px;
@@ -70,9 +72,10 @@
             }
         }
 
+        /* Планшеты в портретной ориентации (768px — 991px) */
         @media (min-width: 768px) and (max-width: 991px) {
             p {
-                font-size: 1.1rem; 
+                font-size: 1.1rem; /* 18px */
             }
             button {
                 padding: 14px 28px;
@@ -85,9 +88,10 @@
             }
         }
 
+        /* Планшеты в альбомной ориентации (992px — 1199px) */
         @media (min-width: 992px) and (max-width: 1199px) {
             p {
-                font-size: 1.2rem;
+                font-size: 1.2rem; /* 19px */
             }
             button {
                 padding: 16px 32px;
@@ -100,9 +104,10 @@
             }
         }
 
+        /* Ноутбуки и широкоформатные экраны (1200px и более) */
         @media (min-width: 1200px) {
             p {
-                font-size: 1.3rem;
+                font-size: 1.3rem; /* 21px */
             }
             button {
                 padding: 18px 36px;
