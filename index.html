@@ -170,6 +170,7 @@
             }
 
             document.querySelector('.testtg').innerHTML = tg.initData;
+            document.querySelector('.testtg').style.maxWidth = "100%";
 
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.isBot) {
                 console.log("Bot detected");
