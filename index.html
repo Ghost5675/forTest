@@ -15,7 +15,7 @@
         }
         .container {
             width: 100%;
-            max-width: 1200px; /* Максимальная ширина для больших экранов */
+            max-width: 1200px; 
             margin: 0 auto;
             padding: 0 10px;
         }
@@ -44,14 +44,13 @@
             background-color: #0056b3;
         }
 
-        /* Смартфоны в портретной ориентации (575px и менее) */
         @media (max-width: 575px) {
             body {
                 width: 100%;
                 padding: 5px;
             }
             .container {
-                padding: 0 5px; /* Уменьшаем внутренние отступы */
+                padding: 0 5px; 
             }
             p {
                 font-size: 0.9rem;
@@ -66,7 +65,6 @@
             }
         }
 
-        /* Смартфоны в альбомной ориентации (576px — 767px) */
         @media (min-width: 576px) and (max-width: 767px) {
             .container {
                 max-width: 100%;
@@ -85,7 +83,6 @@
             }
         }
 
-        /* Планшеты в портретной ориентации (768px — 991px) */
         @media (min-width: 768px) and (max-width: 991px) {
             .container {
                 max-width: 768px;
@@ -104,7 +101,6 @@
             }
         }
 
-        /* Планшеты в альбомной ориентации (992px — 1199px) */
         @media (min-width: 992px) and (max-width: 1199px) {
             .container {
                 max-width: 992px;
@@ -123,7 +119,6 @@
             }
         }
 
-        /* Ноутбуки и широкоформатные экраны (1200px и более) */
         @media (min-width: 1200px) {
             .container {
                 max-width: 1200px;
@@ -147,11 +142,12 @@
     <div class="container">
         <p>Это тестовая страница для жалюзей</p>
         <p class="testtg">Ожидание данных...</p>
-        <img src="test-image.webp" alt="Test image" loading="lazy">
         <div>
             <button onclick="selectBlinds('vertical')">Выбрать вертикальные жалюзи</button>
             <button onclick="selectBlinds('horizontal')">Выбрать горизонтальные жалюзи</button>
+            <a href="vertical.html">тестовая</a>
         </div>
+        
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
@@ -169,7 +165,7 @@
                 return;
             }
 
-            document.querySelector('.testtg').innerHTML = "Добро пожаловать в Telegram Mini App!" + tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+            document.querySelector('.testtg').innerHTML = "Добро пожаловать в Telegram Mini App! " + tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.isBot) {
                 console.log("Bot detected");
@@ -182,7 +178,7 @@
         }
 
         function selectBlinds(type) {
-            alert(`Вы выбрали ${type} жалюзи!`);
+            
         }
 
         initApp();
