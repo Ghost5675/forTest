@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,19 +13,21 @@
             background-color: #f0f0f0;
             color: #333;
         }
-
+        .container {
+            width: 100%;
+            max-width: 1200px; /* Максимальная ширина для больших экранов */
+            margin: 0 auto;
+            padding: 0 10px;
+        }
         img {
             max-width: 100%;
             height: auto;
             margin-bottom: 10px;
         }
-
         p {
             font-size: 1rem;
-            /* 16px по умолчанию */
             margin-bottom: 15px;
         }
-
         button {
             padding: 12px 24px;
             font-size: 1rem;
@@ -39,7 +40,6 @@
             cursor: pointer;
             border-radius: 5px;
         }
-
         button:hover {
             background-color: #0056b3;
         }
@@ -47,21 +47,20 @@
         /* Смартфоны в портретной ориентации (575px и менее) */
         @media (max-width: 575px) {
             body {
+                width: 100%;
                 padding: 5px;
             }
-
-            p {
-                max-width: 575px;
-                font-size: 0.9rem;
-                /* 14px */
+            .container {
+                padding: 0 5px; /* Уменьшаем внутренние отступы */
             }
-
+            p {
+                font-size: 0.9rem;
+            }
             button {
                 width: 100%;
                 padding: 10px;
                 font-size: 0.9rem;
             }
-
             img {
                 width: 100%;
             }
@@ -69,16 +68,16 @@
 
         /* Смартфоны в альбомной ориентации (576px — 767px) */
         @media (min-width: 576px) and (max-width: 767px) {
+            .container {
+                max-width: 100%;
+            }
             p {
                 font-size: 1rem;
-                /* 16px */
             }
-
             button {
                 padding: 12px 20px;
                 font-size: 1rem;
             }
-
             img {
                 max-width: 80%;
                 margin: 0 auto;
@@ -88,16 +87,16 @@
 
         /* Планшеты в портретной ориентации (768px — 991px) */
         @media (min-width: 768px) and (max-width: 991px) {
+            .container {
+                max-width: 768px;
+            }
             p {
                 font-size: 1.1rem;
-                /* 18px */
             }
-
             button {
                 padding: 14px 28px;
                 font-size: 1.1rem;
             }
-
             img {
                 max-width: 70%;
                 margin: 0 auto;
@@ -107,16 +106,16 @@
 
         /* Планшеты в альбомной ориентации (992px — 1199px) */
         @media (min-width: 992px) and (max-width: 1199px) {
+            .container {
+                max-width: 992px;
+            }
             p {
                 font-size: 1.2rem;
-                /* 19px */
             }
-
             button {
                 padding: 16px 32px;
                 font-size: 1.2rem;
             }
-
             img {
                 max-width: 60%;
                 margin: 0 auto;
@@ -126,16 +125,16 @@
 
         /* Ноутбуки и широкоформатные экраны (1200px и более) */
         @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+            }
             p {
                 font-size: 1.3rem;
-                /* 21px */
             }
-
             button {
                 padding: 18px 36px;
                 font-size: 1.3rem;
             }
-
             img {
                 max-width: 50%;
                 margin: 0 auto;
@@ -144,15 +143,15 @@
         }
     </style>
 </head>
-
 <body>
-    <p>Это тестовая страница для жалюзей</p>
-    <p class="testtg">Ожидание данных...</p>
-    <p class="screenApp">размеры окна:</p>
-    <img src="test-image.webp" alt="Test image" loading="lazy">
-    <div>
-        <button onclick="selectBlinds('vertical')">Выбрать вертикальные жалюзи</button>
-        <button onclick="selectBlinds('horizontal')">Выбрать горизонтальные жалюзи</button>
+    <div class="container">
+        <p>Это тестовая страница для жалюзей</p>
+        <p class="testtg">Ожидание данных...</p>
+        <img src="test-image.webp" alt="Test image" loading="lazy">
+        <div>
+            <button onclick="selectBlinds('vertical')">Выбрать вертикальные жалюзи</button>
+            <button onclick="selectBlinds('horizontal')">Выбрать горизонтальные жалюзи</button>
+        </div>
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
@@ -180,11 +179,6 @@
 
             console.log("From Telegram");
             tg.MainButton.setText("Закрыть").show().onClick(() => tg.close());
-
-            const screenWidth = window.screen.width;
-            const screenHeight = window.screen.height;
-
-            document.querySelector('.screenApp').innerHTML = "размеры окна:" + screenWidth + "x" + screenHeight;
         }
 
         function selectBlinds(type) {
@@ -194,5 +188,4 @@
         initApp();
     </script>
 </body>
-
 </html>
