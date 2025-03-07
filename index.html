@@ -1,20 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Telegram Mini App for Blinds</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1rem; 
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            min-width: 48px;
+            min-height: 48px;
+            margin: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 575px) {
+            body {
+                padding: 5px;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            img {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            p {
+                font-size: 1rem; 
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            img {
+                max-width: 80%;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            p {
+                font-size: 1.1rem; 
+            }
+            button {
+                padding: 14px 28px;
+                font-size: 1.1rem;
+            }
+            img {
+                max-width: 70%;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            p {
+                font-size: 1.2rem;
+            }
+            button {
+                padding: 16px 32px;
+                font-size: 1.2rem;
+            }
+            img {
+                max-width: 60%;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            p {
+                font-size: 1.3rem;
+            }
+            button {
+                padding: 18px 36px;
+                font-size: 1.3rem;
+            }
+            img {
+                max-width: 50%;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <p class="testtg">это тест</p>
-
+    <p>Это тестовая страница для жалюзей</p>
+    <p class="testtg">Ожидание данных...</p>
+    <img src="test-image.webp" alt="Test image" loading="lazy">
+    <div>
+        <button onclick="selectBlinds('vertical')">Выбрать вертикальные жалюзи</button>
+        <button onclick="selectBlinds('horizontal')">Выбрать горизонтальные жалюзи</button>
+    </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         function initApp() {
             let tg = window.Telegram.WebApp;
             console.log("initData:", tg.initData);
+
+            let theme = tg.themeParams;
+            document.body.style.backgroundColor = theme.bg_color || '#f0f0f0';
+            document.body.style.color = theme.text_color || '#333';
 
             if (!tg.initData || tg.initData === "") {
                 console.log("Not from Telegram");
@@ -22,7 +140,7 @@
                 return;
             }
 
-            document.querySelector('.testtg').innerHTML = "Добро пожаловать: " + tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+            document.querySelector('.testtg').innerHTML = tg.initData;
 
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.isBot) {
                 console.log("Bot detected");
@@ -31,10 +149,14 @@
             }
 
             console.log("From Telegram");
+            tg.MainButton.setText("Закрыть").show().onClick(() => tg.close());
+        }
+
+        function selectBlinds(type) {
+            alert(`Вы выбрали ${type} жалюзи!`);
         }
 
         initApp();
     </script>
 </body>
-
 </html>
