@@ -122,9 +122,8 @@
 
 <body>
     <div class="container">
-        <h1>Та самая хонка</h1>
         <div class="order-summary">
-            <p>via @BurgerKingBot</p>
+            <p>via @BlindsProBot</p>
             <p>Order summary: $0.00</p>
         </div>
         <div class="menu">
@@ -133,55 +132,87 @@
         <button class="view-order-btn">VIEW ORDER</button>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const addButtons = document.querySelectorAll('.add-btn');
-            const minusButton = document.querySelector('.minus-btn');
-            const plusButton = document.querySelector('.plus-btn');
-            const quantitySpan = document.querySelector('.quantity span');
-            let quantity = 0;
-
-            addButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    alert('Item added to order!');
-                });
-            });
-
-            minusButton.addEventListener('click', () => {
-                if (quantity > 0) {
-                    quantity--;
-                    quantitySpan.textContent = quantity;
-                }
-            });
-
-            plusButton.addEventListener('click', () => {
-                quantity++;
-                quantitySpan.textContent = quantity;
-            });
-        })
+        let products = [];
+        let order = JSON.parse(localStorage.getItem('order')) || [];
+        let quantities = {};
 
         fetch('assets/products.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Файл не найден');
+                return response.json();
+            })
             .then(data => {
-                window.products = data;
+                products = data;
                 renderProducts();
             })
             .catch(error => console.error('Ошибка загрузки товаров:', error));
 
         function renderProducts() {
-            const menu = document.querySelector('.menu');
-            menu.innerHTML = '';
-            window.products.forEach(product => {
+            const container = document.getElementById('menu-container');
+            if (!container) {
+                console.error('Контейнер menu-container не найден');
+                return;
+            }
+            container.innerHTML = '';
+            products.forEach(product => {
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('menu-item');
+                const qty = quantities[product.id] || 0;
                 menuItem.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <p>${product.name} - $${product.price}</p>
-                    <button class="add-btn">ADD</button>
+                    <img src="https://ghost5675.github.io/forTest/assets/${product.image}" alt="${product.name}">
+                    <p>${product.name} - $${product.price.toFixed(2)}</p>
+                    <div class="quantity">
+                        <button class="minus-btn" onclick="updateQuantity('${product.id}', -1)">-</button>
+                        <span>${qty}</span>
+                        <button class="plus-btn" onclick="updateQuantity('${product.id}', 1)">+</button>
+                    </div>
                 `;
-                menu.appendChild(menuItem);
+                container.appendChild(menuItem);
             });
+            updateOrderSummary();
         }
 
+        function updateQuantity(productId, change) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            quantities[productId] = (quantities[productId] || 0) + change;
+            if (quantities[productId] < 0) quantities[productId] = 0;
+
+            order = order.filter(item => item.id !== productId || quantities[productId] > 0);
+            if (quantities[productId] > 0) {
+                order.push({ id: productId, name: product.name, price: product.price });
+            }
+            localStorage.setItem('order', JSON.stringify(order));
+            renderProducts(); 
+        }
+
+        function updateOrderSummary() {
+            const total = order.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+            document.getElementById('order-total').textContent = `Order summary: $${total}`;
+        }
+
+        function viewOrder() {
+            if (order.length === 0) {
+                alert("Ваш заказ пуст.");
+            } else {
+                const orderText = order.map(item => `${item.name} - $${item.price.toFixed(2)}`).join("\n");
+                alert("Ваш заказ:\n" + orderText);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tg = Telegram.WebApp;
+            const theme = tg.themeParams;
+            document.body.style.backgroundColor = theme.bg_color || '#1a1a1a';
+            document.body.style.color = theme.text_color || '#ffffff';
+            tg.MainButton.setText("Закрыть").show().onClick(() => tg.close());
+
+            order.forEach(item => {
+                quantities[item.id] = (quantities[item.id] || 0) + 1;
+            });
+            renderProducts();
+        });
     </script>
 </body>
 
