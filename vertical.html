@@ -52,8 +52,9 @@
         }
 
         .menu-item img {
-            width: 50px;
-            height: 50px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
         }
 
         .menu-item p {
@@ -79,6 +80,7 @@
             justify-content: center;
             align-items: center;
             gap: 5px;
+            margin-top: 5px;
         }
 
         .minus-btn,
@@ -111,12 +113,6 @@
         .view-order-btn:hover {
             background-color: #00b300;
         }
-
-        .menu-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 
@@ -124,33 +120,39 @@
     <div class="container">
         <div class="order-summary">
             <p>via @BlindsProBot</p>
-            <p>Order summary: $0.00</p>
+            <p id="order-total">Order summary: $0.00</p>
         </div>
-        <div class="menu">
-            
-        </div>
-        <button class="view-order-btn">VIEW ORDER</button>
+        <div class="menu" id="menu-container"></div>
+        <button class="view-order-btn" onclick="viewOrder()">VIEW ORDER</button>
     </div>
+
     <script>
+        // Глобальные переменные
         let products = [];
         let order = JSON.parse(localStorage.getItem('order')) || [];
         let quantities = {};
 
-        fetch('assets/products.json')
+        // Загрузка продуктов
+        fetch('https://ghost5675.github.io/forTest/assets/products.json')
             .then(response => {
                 if (!response.ok) throw new Error('Файл не найден');
                 return response.json();
             })
             .then(data => {
-                products = data;
+                products = data.products; // Извлекаем массив из ключа "products"
                 renderProducts();
             })
             .catch(error => console.error('Ошибка загрузки товаров:', error));
 
+        // Рендеринг продуктов
         function renderProducts() {
-            const container = document.getElementById('menu');
+            const container = document.getElementById('menu-container');
             if (!container) {
                 console.error('Контейнер menu-container не найден');
+                return;
+            }
+            if (!Array.isArray(products)) {
+                console.error('products не является массивом:', products);
                 return;
             }
             container.innerHTML = '';
@@ -172,6 +174,7 @@
             updateOrderSummary();
         }
 
+        // Обновление количества и заказа
         function updateQuantity(productId, change) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -179,19 +182,22 @@
             quantities[productId] = (quantities[productId] || 0) + change;
             if (quantities[productId] < 0) quantities[productId] = 0;
 
+            // Обновляем заказ
             order = order.filter(item => item.id !== productId || quantities[productId] > 0);
             if (quantities[productId] > 0) {
                 order.push({ id: productId, name: product.name, price: product.price });
             }
             localStorage.setItem('order', JSON.stringify(order));
-            renderProducts(); 
+            renderProducts(); // Перерендеринг для обновления количества
         }
 
+        // Обновление общей суммы
         function updateOrderSummary() {
             const total = order.reduce((sum, item) => sum + item.price, 0).toFixed(2);
             document.getElementById('order-total').textContent = `Order summary: $${total}`;
         }
 
+        // Просмотр заказа
         function viewOrder() {
             if (order.length === 0) {
                 alert("Ваш заказ пуст.");
@@ -201,6 +207,7 @@
             }
         }
 
+        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             const tg = Telegram.WebApp;
             const theme = tg.themeParams;
@@ -208,10 +215,10 @@
             document.body.style.color = theme.text_color || '#ffffff';
             tg.MainButton.setText("Закрыть").show().onClick(() => tg.close());
 
+            // Обновляем количества из localStorage
             order.forEach(item => {
                 quantities[item.id] = (quantities[item.id] || 0) + 1;
             });
-            renderProducts();
         });
     </script>
 </body>
