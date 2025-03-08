@@ -111,6 +111,12 @@
         .view-order-btn:hover {
             background-color: #00b300;
         }
+
+        .menu-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -122,55 +128,7 @@
             <p>Order summary: $0.00</p>
         </div>
         <div class="menu">
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/hamburger_1f354.png" alt="Burger">
-                <p>Burger - $4.99</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/fries_1f35f.png" alt="Fries">
-                <p>Fries - $1.49</p>
-                <div class="quantity">
-                    <button class="minus-btn">-</button>
-                    <span>0</span>
-                    <button class="plus-btn">+</button>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/hot-dog_1f32d.png" alt="Hotdog">
-                <p>Hotdog - $3.49</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/taco_1f32e.png" alt="Taco">
-                <p>Taco - $3.99</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/pizza_1f355.png" alt="Pizza">
-                <p>Pizza - $7.99</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/doughnut_1f369.png" alt="Donut">
-                <p>Donut - $1.49</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/popcorn_1f37f.png" alt="Popcorn">
-                <p>Popcorn - $1.99</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/beverage-box_1f9cb.png" alt="Coke">
-                <p>Coke - $1.49</p>
-                <button class="add-btn">ADD</button>
-            </div>
-            <div class="menu-item">
-                <img src="https://em-content.zobj.net/thumbs/120/apple/325/shortcake_1f370.png" alt="Cake">
-                <p>Cake - $10.99</p>
-                <button class="add-btn">ADD</button>
-            </div>
+            
         </div>
         <button class="view-order-btn">VIEW ORDER</button>
     </div>
@@ -200,6 +158,30 @@
                 quantitySpan.textContent = quantity;
             });
         })
+
+        fetch('assets/products.json')
+            .then(response => response.json())
+            .then(data => {
+                window.products = data;
+                renderProducts();
+            })
+            .catch(error => console.error('Ошибка загрузки товаров:', error));
+
+        function renderProducts() {
+            const menu = document.querySelector('.menu');
+            menu.innerHTML = '';
+            window.products.forEach(product => {
+                const menuItem = document.createElement('div');
+                menuItem.classList.add('menu-item');
+                menuItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <p>${product.name} - $${product.price}</p>
+                    <button class="add-btn">ADD</button>
+                `;
+                menu.appendChild(menuItem);
+            });
+        }
+
     </script>
 </body>
 
